@@ -1,5 +1,8 @@
 import boto3
-import picamera
+#import picamera
+import numpy as np
+import cv2
+import time
 
 s3 = boto3.resource('s3')
 client = boto3.client('rekognition')
@@ -40,12 +43,21 @@ def get_best_label(label_array):
 
 
 if __name__ == "__main__":
-    bucket = 'aya-photos'
-    faceBucket = 'aya-saved-faces'
+    bucket = 'pythonexercise1'#'aya-photos'
+    #faceBucket = 'aya-saved-faces'
     sourceFile = 'test.jpg'
 
-    pc = picamera.PiCamera()
-    pc.capture('test.jpg')
+    '''pc = picamera.PiCamera()
+    pc.capture('test.jpg')'''
+    cap = cv2.VideoCapture(0)
+    ret, frame = cap.read()
+    while(True):
+        cv2.imshow('img1',frame) #display the captured image
+        if cv2.waitKey(1) & 0xFF == ord('y'): #save on pressing 'y'
+            cv2.imwrite(sourceFile,frame)
+            cv2.destroyAllWindows()
+            break
+    cap.release()
 
     upload_image(sourceFile, bucket)
 
@@ -64,4 +76,4 @@ if __name__ == "__main__":
     textToSpeak = "That is " + definiteArticle + " " + bestLabel.lower() + "!"
     print(textToSpeak)
 
-    delete_image(bucket, sourceFile)
+    #delete_image(bucket, sourceFile)
