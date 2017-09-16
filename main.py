@@ -65,41 +65,62 @@ def call_polly(text, fileName):
     "
     os.system(start + text + end + fileName)
 
+def article_message(labelArray):
+    bestLabel = get_best_label(labelArray)
+    vowels = ('a', 'e', 'i', 'o', 'u')
+    definiteArticle = ''
+    if len(bestLabel) >= 1:
+        if bestLabel[0].lower() in vowels:
+            definiteArticle = 'an'
+        else:
+            definiteArticle = 'a'
+        # Decide what to say here
+        textToSpeak = "That is " + definiteArticle + " " + bestLabel.lower() + "!"
+    else:
+        textToSpeak = "I have nothing to say."
+    
+    return textToSpeak
+
+def message(text):
+    fileName = "message.mp3"
+    call_polly(text, fileName)
+    play_mp3(fileName)
+
 def analyze_image(labelArray):
+    enoughMessages = False
+    personDone = False
     for label in labelArray['Labels']:
-        #print (label['Name'] + ' : ' + str(label['Confidence']))
-        if label['Name'] == 'Person':
-            text = "Oh hello, you look like a nice person."
-            fileName = "person.mp3"
-            call_polly(text, fileName)
-            play_mp3(fileName)
+        print (label['Name'] + ' : ' + str(label['Confidence']))
+        if (label['Name'] == 'Person' or label['Name'] == 'People') and not personDone:
+            message("Oh hello, you look like a nice person.")
+            personDone = True
+            enoughMessages = True
+        elif label['Name'] == 'Bottle':
+            message("Oh you are so lucky, I wish I had that bottle. I am so thirsty . . .")
+            enoughMessages = True
+        elif label['Name'] == 'Mobile Phone':
+            message("Oh nice phone by the way.")
+            enoughMessages = True
+        elif not enoughMessages:
+            message(article_message(labelArray))
+            break
+            
 
 if __name__ == "__main__":
     play_mp3("intro.mp3")
     bucket = 'pythonexercise1'#'aya-photos'
     #faceBucket = 'aya-saved-faces'
     sourceFile = 'test.jpg'
-
     '''pc = picamera.PiCamera()
     pc.capture('test.jpg')'''
-    opencv_capture()
-
-    upload_image(sourceFile, bucket)
-
-    labelArray = detect_labels(bucket, sourceFile)
-
-    '''bestLabel = get_best_label(labelArray)
-
-    vowels = ('a', 'e', 'i', 'o', 'u')
-    definiteArticle = ''
-    if bestLabel[0].lower() in vowels:
-        definiteArticle = 'an'
-    else:
-        definiteArticle = 'a'
-
-    # Decide what to say here
-    textToSpeak = "That is " + definiteArticle + " " + bestLabel.lower() + "!"
-    print(textToSpeak)'''
-    analyze_image(labelArray)
-
-    delete_image(bucket, sourceFile)
+    count = 0
+    while (count < 1):
+        opencv_capture()
+        upload_image(sourceFile, bucket)
+        labelArray = detect_labels(bucket, sourceFile)
+        print("Analyzing image . . .")
+        analyze_image(labelArray)
+        delete_image(bucket, sourceFile)
+        count += 1
+        time.sleep(3)
+    
