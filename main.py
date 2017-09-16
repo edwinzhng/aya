@@ -86,12 +86,23 @@ def message(text):
     call_polly(text, fileName)
     play_mp3(fileName)
 
+response = {
+    'Person': "Oh hello, you look like a nice person.",
+    'People': "Oh hello, you look like a nice person.",
+    'Human': "Oh hello, you look like a nice person.",
+    'Bottle': "Oh you are so lucky, I wish I had that bottle. I am so thirsty . . .",
+    'Mobile Phone': "Oh nice phone by the way."
+    }
+
 def analyze_image(labelArray):
     enoughMessages = False
     personDone = False
     for label in labelArray['Labels']:
         print (label['Name'] + ' : ' + str(label['Confidence']))
-        if (label['Name'] == 'Person' or label['Name'] == 'People') and not personDone:
+        if label['Name'] in response:
+            message(response[label['Name']])
+            break
+        '''if (label['Name'] == 'Person' or label['Name'] == 'People') and not personDone:
             message("Oh hello, you look like a nice person.")
             personDone = True
             enoughMessages = True
@@ -103,7 +114,7 @@ def analyze_image(labelArray):
             enoughMessages = True
         elif not enoughMessages:
             message(article_message(labelArray))
-            break
+            break'''
             
 
 if __name__ == "__main__":
