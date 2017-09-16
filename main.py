@@ -1,7 +1,7 @@
+#!/usr/bin/python3
 import boto3
-#import picamera
+import picamera
 import numpy as np
-import cv2
 import time
 import os
 import json
@@ -54,7 +54,7 @@ def get_best_label(label_array):
 
     return best_label
 
-def opencv_capture():
+'''def opencv_capture():
     cap = cv2.VideoCapture(0)
     ret, frame = cap.read()
     while(True):
@@ -64,7 +64,7 @@ def opencv_capture():
             cv2.destroyAllWindows()
             break
     cap.release()
-
+'''
 def call_polly(text, fileName):
     start = "aws polly synthesize-speech \
     --output-format mp3 \
@@ -99,7 +99,7 @@ response = {
     'Person': "Oh hello, you look like a nice person.",
     'People': "Hello people.",
     'Human': "Looks like a nice human being.",
-    'Bottle': "Oh you are so lucky, I wish I had that bottle. I am so thirsty . . .",
+    'Bottle': "Oh you are so lucky, I wish I had that bottle. I am so thirsty...",
     'Mobile Phone': "Oh nice phone by the way."
     }
 
@@ -117,7 +117,7 @@ def analyze_labels(labelArray):
             personDone = True
             enoughMessages = True
         elif label['Name'] == 'Bottle':
-            message("Oh you are so lucky, I wish I had that bottle. I am so thirsty . . .")
+            message("Oh you are so lucky, I wish I had that bottle. I am so thirsty...")
             enoughMessages = True
         elif label['Name'] == 'Mobile Phone':
             message("Oh nice phone by the way.")
@@ -161,26 +161,25 @@ def analyze_all_previous(sourceFile):
 
 if __name__ == "__main__":
     play_mp3("intro.mp3")
-    bucket = 'pythonexercise1'#'aya-photos'
-    #faceBucket = 'aya-saved-faces'
+    bucket = 'aya-photos'
+    faceBucket = 'aya-saved-faces'
     sourceFile = 'test.jpg'
     previouslySeen = False
-    '''pc = picamera.PiCamera()
-    pc.capture('test.jpg')'''
+    pc = picamera.PiCamera()
     count = 0
     while (count < 1):
-        opencv_capture()
+        pc.capture('test.jpg')
         upload_image(sourceFile, bucket)
-        print("Comparing with previous faces . . .")
+        print("Comparing with previous faces...")
         previouslySeen = analyze_all_previous(sourceFile)
         if not previouslySeen:
             labelArray = detect_labels(bucket, sourceFile)
             faceArray = detect_faces(bucket, sourceFile)
-            #print("Analyzing labels . . .")
+            #print("Analyzing labels...")
             #analyze_labels(labelArray)
-            print("Analyzing faces . . .")
+            print("Analyzing faces...")
             analyze_faces(faceArray)
         delete_image(bucket, sourceFile)
         count += 1
-        #time.sleep(3)
+        time.sleep(1)
     
