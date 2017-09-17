@@ -44,7 +44,7 @@ def article_message(labelArray):
         # Decide what to say here
         textToSpeak = "That is " + definiteArticle + " " + bestLabel.lower() + "!"
     else:
-        textToSpeak = "I have nothing to say."
+        textToSpeak = "I can't really see anything very interesting right now."
     return textToSpeak
 
 def message(text):
@@ -52,7 +52,7 @@ def message(text):
     call_polly(text, fileName)
     playsound(fileName) # play sound
 
-response = {
+'''response = {
     'Person': "Oh hello, you look like a nice person.",
     'People': "Hello everyone!",
     'Human': "Hey look, a nice human being.",
@@ -93,7 +93,7 @@ def analyze_labels(labelArray):
             message(response[label['Name']])
         else:
             message(article_message(labelArray))
-        '''if (label['Name'] == 'Person' or label['Name'] == 'People') and not personDone:
+        if (label['Name'] == 'Person' or label['Name'] == 'People') and not personDone:
             message("Oh hello, you look like a nice person.")
             personDone = True
             enoughMessages = True
@@ -105,7 +105,7 @@ def analyze_labels(labelArray):
             enoughMessages = True
         elif not enoughMessages:
             message(article_message(labelArray))
-            break'''
+            break
 
 def analyze_faces(faceArray):
     for faceDetail in faceArray['FaceDetails']:
@@ -136,4 +136,4 @@ def analyze_faces(faceArray):
         if "Male" in faceDetail['Gender'] and faceDetail['Gender']['Confidence'] > 99.9:
             message("You really look male.")
         if "Female" in faceDetail['Gender'] and faceDetail['Gender']['Confidence'] > 99.9:
-            message("You really look feminine.")
+            message("You really look feminine.")'''
