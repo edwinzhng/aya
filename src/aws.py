@@ -22,12 +22,12 @@ def detect_faces(photo_bucket, source_file):
     return client.detect_faces(Image={'S3Object':{'Bucket':photo_bucket,'Name':source_file}},Attributes=['ALL'])
 
 def get_best_label(label_array):
-    max_confidence = 0
+    max_confidence = 50
     best_label = ''
     people_tags = ('Person', 'Human', 'People')
 
     for item in label_array['Labels']:
-        if item['Confidence'] >= max_confidence:
+        if item['Confidence'] >= max_confidence  && item['Name'] not in people_tags::
             best_label = item['Name']
             max_confidence = item['Confidence']
 

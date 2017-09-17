@@ -36,18 +36,10 @@ def main():
                 aws.message(text)
             else:
                 labelArray = aws.detect_labels(bucket, sourceFile)
-                faceArray = aws.detect_faces(bucket, sourceFile)
-                print("Analyzing labels...")
-                aws.analyze_labels(labelArray)
-                print("Analyzing faces...")
-                aws.analyze_faces(faceArray)
+                article_message(labelArray)
         else:
             labelArray = aws.detect_labels(bucket, sourceFile)
-            faceArray = aws.detect_faces(bucket, sourceFile)
-            print("Analyzing labels...")
-            aws.analyze_labels(labelArray)
-            print("Analyzing faces...")
-            aws.analyze_faces(faceArray)
+            article_message(labelArray)
 
         s3.delete_image(bucket, sourceFile)
         count += 1
