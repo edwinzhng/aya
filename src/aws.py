@@ -49,7 +49,7 @@ def article_message(labelArray):
 def message(text):
     fileName = "message.mp3"
     call_polly(text, fileName)
-    play_mp3(fileName)
+    os.system("mpg123-pulse " + fileName) # play sound
 
 response = {
     'Person': "Oh hello, you look like a nice person.",
