@@ -17,6 +17,9 @@ def stopActuate():
     shouldStop = True
 
 def moveMouth(time):
+    global shouldStop
+    shouldStop = False
+    time.sleep(0.5)
     threading.Thread(target = actuate).start()
     threading.Timer(time, stopActuate).start()
 
