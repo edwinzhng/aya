@@ -85,6 +85,30 @@ response = {
     'Mobile Phone': "Hey that's a nice phone!"
     }
 
+emotions = {
+    'HAPPY40': "You look happy.",
+    'HAPPY60': "You look pretty happy.",
+    'HAPPY80': "Oh my God, what happened! You look really happy!",
+    'ANGRY40': "You don't look happy.",
+    'ANGRY60': "Are you mad?",
+    'ANGRY80': "What happened? You look pissed.",
+    'CONFUSED40': "Do you have a question?",
+    'CONFUSED60': "You look confused.",
+    'CONFUSED80': "You really look confused.",
+    'SAD40': "You look sad.",
+    'SAD60': "You look a little bit sad.",
+    'SAD80': "Are you crying?",
+    'DISGUSTED40': "You look disgusted.",
+    'DISGUSTED60': "You look a little bit disgusted.",
+    'DISGUSTED80': "You look very disgusted. You look like you're about to vomit.",
+    'SURPRISED40': "You look surprised.",
+    'SURPRISED60': "You look really surprised.",
+    'SURPRISED80': "Oh my God, what happened. You look so surprised.",
+    'CALM40': "You look calm.",
+    'CALM60': "You look really calm.",
+    'CALM80': "You look so calm. I like that. I like calm persons."
+}
+
 def analyze_labels(labelArray):
     enoughMessages = False
     personDone = False
@@ -116,6 +140,10 @@ def analyze_faces(faceArray):
         print(json.dumps(faceDetail, indent=4, sort_keys=True))
         message("You look like someone between " + str(faceDetail['AgeRange']['Low'])
               + ' and ' + str(faceDetail['AgeRange']['High']) + " years old")
+        for emotion in faceDetail['Emotions']:
+            emotionString = emotion['Type'] + str(int(emotion['Confidence'] // 20 * 20))
+            if emotionString in emotions:
+                message(emotions[emotionString])
 
 def analyze_previous(previousArray, name):
     result = False
