@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 import boto3
-#import picamera
+import picamera
 import numpy as np
 import time
 import os
@@ -142,14 +142,14 @@ def analyze_all_previous(sourceFile):
     return previouslySeen
 
 if __name__ == "__main__":
-    #play_mp3("/audio/intro.mp3")
+    play_mp3("/audio/intro.mp3")
     bucket = 'aya-photos'
     sourceFile = 'img/test.jpg'
     previouslySeen = False
-    #pc = picamera.PiCamera()
+    pc = picamera.PiCamera()
     count = 0
     while (count < 1):
-        #pc.capture(sourceFile)
+        pc.capture(sourceFile)
         s3.upload_image(sourceFile, bucket)
         print("Comparing with previous faces...")
         previouslySeen = analyze_all_previous(sourceFile)
