@@ -87,7 +87,7 @@ def article_message(labelArray):
         textToSpeak = "That is " + definiteArticle + " " + bestLabel.lower() + "!"
     else:
         textToSpeak = "I have nothing to say."
-    
+
     return textToSpeak
 
 def message(text):
@@ -97,10 +97,10 @@ def message(text):
 
 response = {
     'Person': "Oh hello, you look like a nice person.",
-    'People': "Hello people.",
+    'People': "Hello everyone!",
     'Human': "Looks like a nice human being.",
-    'Bottle': "Oh you are so lucky, I wish I had that bottle. I am so thirsty...",
-    'Mobile Phone': "Oh nice phone by the way."
+    'Bottle': "You are so lucky, I wish I had that bottle. I am so thirsty.",
+    'Mobile Phone': "That is a very nice phone!"
     }
 
 def analyze_labels(labelArray):
@@ -162,7 +162,6 @@ def analyze_all_previous(sourceFile):
 if __name__ == "__main__":
     play_mp3("intro.mp3")
     bucket = 'aya-photos'
-    faceBucket = 'aya-saved-faces'
     sourceFile = 'test.jpg'
     previouslySeen = False
     pc = picamera.PiCamera()
@@ -175,11 +174,10 @@ if __name__ == "__main__":
         if not previouslySeen:
             labelArray = detect_labels(bucket, sourceFile)
             faceArray = detect_faces(bucket, sourceFile)
-            #print("Analyzing labels...")
-            #analyze_labels(labelArray)
+            print("Analyzing labels...")
+            analyze_labels(labelArray)
             print("Analyzing faces...")
             analyze_faces(faceArray)
         delete_image(bucket, sourceFile)
         count += 1
-        time.sleep(1)
-    
+        time.sleep(5)
