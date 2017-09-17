@@ -20,4 +20,4 @@ def startServo():
 
 def stopServo():
 	p.stop()
-        GPIO.cleanup()
+    GPIO.cleanup()
