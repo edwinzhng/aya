@@ -6,9 +6,8 @@ GPIO.setup(29,GPIO.OUT)
 
 try:
         while True:
-        time.sleep(0.015);
-
-        time.sleep(3)
+            time.sleep(0.015)
+            time.sleep(3)
 
 except KeyboardInterrupt:
     GPIO.cleanup()
