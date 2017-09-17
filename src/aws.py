@@ -1,11 +1,12 @@
 import boto3
 import os
+from playsound import playsound
 
 client = boto3.client('rekognition')
 
 def call_polly(text, fileName):
     start = "aws polly synthesize-speech \
-    --output-format mp3 \
+    --output-format ogg_vorbis \
     --voice-id Joanna \
     --text '"
     end = "' \
@@ -18,7 +19,6 @@ def detect_labels(photo_bucket, source_file):
 def detect_faces(photo_bucket, source_file):
     return client.detect_faces(Image={'S3Object':{'Bucket':photo_bucket,'Name':source_file}},Attributes=['ALL'])
 
-# TODO get relevancy instead of taking max confidence
 def get_best_label(label_array):
     max_confidence = 0
     best_label = ''
@@ -47,9 +47,9 @@ def article_message(labelArray):
     return textToSpeak
 
 def message(text):
-    fileName = "message.mp3"
+    fileName = "message.ogg"
     call_polly(text, fileName)
-    os.system("mpg123-pulse " + fileName) # play sound
+    playsound(fileName) # play sound
 
 response = {
     'Person': "Oh hello, you look like a nice person.",
