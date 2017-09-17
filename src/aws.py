@@ -1,5 +1,6 @@
 import boto3
 import os
+import servotest as st
 from playsound import playsound
 
 client = boto3.client('rekognition')
@@ -50,7 +51,9 @@ def article_message(labelArray):
 def message(text):
     fileName = "message.ogg"
     call_polly(text, fileName)
+    st.startServo()
     playsound(fileName) # play sound
+    st.stopServo()
 
 '''response = {
     'Person': "Oh hello, you look like a nice person.",
