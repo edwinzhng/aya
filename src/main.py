@@ -25,8 +25,9 @@ if __name__ == "__main__":
         pc.capture(sourceFile)
         s3.upload_image(sourceFile, bucket)
         print("Checking collection for face...")
-        foundFace = fr.searchFaces(collection, bucket, sourceFile)
-        if foundFace:
+        existsPerson = aws.detect_faces(bucket, sourceFile)
+        if existsPerson['FaceDetails']:
+            foundFace = fr.searchFaces(collection, bucket, sourceFile)
             name = foundFace['FaceMatches'][0]['Face']['ExternalImageId']
             aws.message("Hi " + name + ", nice to see you again!")
         else:
