@@ -20,7 +20,7 @@ if __name__ == "__main__":
         pc.capture(sourceFile)
         s3.upload_image(sourceFile, bucket)
         print("Comparing with previous faces...")
-        previouslySeen = aws.analyze_all_previous(sourceFile)
+        previouslySeen = aws.analyze_all_previous(bucket, sourceFile)
         if not previouslySeen:
             labelArray = aws.detect_labels(bucket, sourceFile)
             faceArray = aws.detect_faces(bucket, sourceFile)

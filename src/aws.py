@@ -151,7 +151,7 @@ def analyze_previous(previousArray, name):
             message("Hi " + name + ", nice to see you again!")
     return result
 
-def analyze_all_previous(sourceFile):
+def analyze_all_previous(bucket, sourceFile):
     previouslySeen = False
     targetFile = 'MathieuGodinSelfie.jpg'
     previousArray = detect_previous(bucket, sourceFile, targetFile)
