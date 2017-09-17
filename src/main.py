@@ -17,6 +17,7 @@ if __name__ == "__main__":
     sourceFile = 'test.jpg'
     pc = picamera.PiCamera()
 
+    play_mp3("audio/slience.mp3")
     play_mp3("audio/intro.mp3")
 
     count = 0
