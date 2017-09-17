@@ -21,7 +21,7 @@ if __name__ == "__main__":
     play_mp3("audio/intro.mp3")
 
     count = 0
-    while (count < 1):
+    while (count < 3):
         pc.capture(sourceFile)
         s3.upload_image(sourceFile, bucket)
         print("Checking collection for face...")
@@ -50,4 +50,4 @@ if __name__ == "__main__":
 
         s3.delete_image(bucket, sourceFile)
         count += 1
-        time.sleep(7)
+        time.sleep(1)
