@@ -1,5 +1,7 @@
 import boto3
 
+client = boto3.client('rekognition')
+
 def call_polly(text, fileName):
     start = "aws polly synthesize-speech \
     --output-format mp3 \
@@ -9,18 +11,11 @@ def call_polly(text, fileName):
     "
     os.system(start + text + end + fileName)
 
-client = boto3.client('rekognition')
-
 def detect_labels(photo_bucket, source_file):
     return client.detect_labels(Image={'S3Object': {'Bucket': photo_bucket, 'Name': source_file}}, MinConfidence=80)
 
 def detect_faces(photo_bucket, source_file):
     return client.detect_faces(Image={'S3Object':{'Bucket':photo_bucket,'Name':source_file}},Attributes=['ALL'])
-
-def detect_previous(photo_bucket, source_file, target_file):
-    return client.compare_faces(SimilarityThreshold=70,
-                                  SourceImage={'S3Object':{'Bucket':photo_bucket,'Name':source_file}},
-                                  TargetImage={'S3Object':{'Bucket':photo_bucket,'Name':target_file}})
 
 # TODO get relevancy instead of taking max confidence
 def get_best_label(label_array):
@@ -48,7 +43,6 @@ def article_message(labelArray):
         textToSpeak = "That is " + definiteArticle + " " + bestLabel.lower() + "!"
     else:
         textToSpeak = "I have nothing to say."
-
     return textToSpeak
 
 def message(text):
@@ -141,27 +135,3 @@ def analyze_faces(faceArray):
             message("You really look male.")
         if "Female" in faceDetail['Gender'] and faceDetail['Gender']['Confidence'] > 99.9:
             message("You really look feminine.")
-
-def analyze_previous(previousArray, name):
-    result = False
-    for faceMatch in previousArray['FaceMatches']:
-        position = faceMatch['Face']['BoundingBox']
-        confidence = str(faceMatch['Face']['Confidence'])
-        print('The face at ' +
-               str(position['Left']) + ' ' +
-               str(position['Top']) +
-               ' matches with ' + confidence + '% confidence')
-        result = faceMatch['Face']['Confidence'] > 80
-        if result:
-            message("Hi " + name + ", nice to see you again!")
-    return result
-
-def analyze_all_previous(bucket, sourceFile):
-    previouslySeen = False
-    targetFile = 'MathieuGodinSelfie.jpg'
-    previousArray = detect_previous(bucket, sourceFile, targetFile)
-    previouslySeen = analyze_previous(previousArray, "Mathieu")
-    targetFile = 'balaji.jpg'
-    previousArray = detect_previous(bucket, sourceFile, targetFile)
-    previouslySeen = analyze_previous(previousArray, "Balaji")
-    return previouslySeen
