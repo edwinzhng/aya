@@ -1,6 +1,8 @@
 import boto3
 import os
 from playsound import playsound
+from tinytag import TinyTag
+
 import moveMouth
 
 client = boto3.client('rekognition')
@@ -46,12 +48,13 @@ def article_message(labelArray):
         textToSpeak = "That is " + definiteArticle + " " + bestLabel.lower() + "!"
     else:
         textToSpeak = "I can't really see anything very interesting right now."
-    return textToSpeak
+    message(textToSpeak)
 
 def message(text):
     fileName = "message.ogg"
     call_polly(text, fileName)
-    moveMouth.moveMouth(5)
+    track = TinyTag.get(fileName)
+    moveMouth.moveMouth(track.duration)
     playsound(fileName) # play sound
 
 '''response = {

@@ -36,7 +36,7 @@ def main():
                 aws.message(text)
             else:
                 labelArray = aws.detect_labels(bucket, sourceFile)
-                article_message(labelArray)
+                aws.article_message(labelArray)
         else:
             labelArray = aws.detect_labels(bucket, sourceFile)
             aws.article_message(labelArray)
