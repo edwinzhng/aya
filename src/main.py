@@ -3,25 +3,22 @@ import picamera
 import time
 import os
 import json
+from playsound import playsound
 
 import s3
 import aws
 import facerecognition as fr
 
-def play_mp3(fileName):
-    os.system("mpg123-pulse " + fileName)
-
-if __name__ == "__main__":
+def main():
     collection = 'aya-faces'
     bucket = 'aya-photos'
     sourceFile = 'test.jpg'
     pc = picamera.PiCamera()
 
-    play_mp3("audio/slience.mp3")
-    play_mp3("audio/intro.mp3")
+    playsound("audio/intro.mp3")
 
     count = 0
-    while (count < 3):
+    while(count <= 1):
         pc.capture(sourceFile)
         s3.upload_image(sourceFile, bucket)
         print("Checking collection for face...")
@@ -50,4 +47,7 @@ if __name__ == "__main__":
 
         s3.delete_image(bucket, sourceFile)
         count += 1
-        time.sleep(1)
+        time.sleep(7)
+
+if __name__ == '__main__':
+    main()
