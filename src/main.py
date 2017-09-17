@@ -1,30 +1,13 @@
 #!/usr/bin/python3
 import boto3
-import picamera
+#import picamera
 import numpy as np
 import time
 import os
 import json
+import s3
 
-s3 = boto3.resource('s3')
 client = boto3.client('rekognition')
-
-
-def upload_image(source_file, photo_bucket):
-    s3.meta.client.upload_file(source_file, photo_bucket, source_file)
-
-
-def delete_image(photo_bucket, key):
-    s3.Bucket(photo_bucket).delete_objects(
-        Delete={
-            'Objects': [
-                {
-                    'Key': key,
-                }
-            ],
-        },
-    )
-
 
 def detect_labels(photo_bucket, source_file):
     return client.detect_labels(Image={'S3Object': {'Bucket': photo_bucket, 'Name': source_file}}, MinConfidence=80)
@@ -39,7 +22,6 @@ def detect_previous(photo_bucket, source_file, target_file):
 
 def play_mp3(fileName):
     os.system("mpg123-pulse " + fileName)
-
 
 # TODO get relevancy instead of taking max confidence
 def get_best_label(label_array):
@@ -98,9 +80,9 @@ def message(text):
 response = {
     'Person': "Oh hello, you look like a nice person.",
     'People': "Hello everyone!",
-    'Human': "Looks like a nice human being.",
+    'Human': "Hey look, a nice human being.",
     'Bottle': "You are so lucky, I wish I had that bottle. I am so thirsty.",
-    'Mobile Phone': "That is a very nice phone!"
+    'Mobile Phone': "Hey that's a nice phone!"
     }
 
 def analyze_labels(labelArray):
@@ -117,10 +99,10 @@ def analyze_labels(labelArray):
             personDone = True
             enoughMessages = True
         elif label['Name'] == 'Bottle':
-            message("Oh you are so lucky, I wish I had that bottle. I am so thirsty...")
+            message("You are so lucky, I wish I had that bottle. I am so thirsty.")
             enoughMessages = True
         elif label['Name'] == 'Mobile Phone':
-            message("Oh nice phone by the way.")
+            message("Hey that's a nice phone!")
             enoughMessages = True
         elif not enoughMessages:
             message(article_message(labelArray))
@@ -146,7 +128,7 @@ def analyze_previous(previousArray, name):
                ' matches with ' + confidence + '% confidence')
         result = faceMatch['Face']['Confidence'] > 80
         if result:
-            message("Hi " + name + ", nice seeing you back!")
+            message("Hi " + name + ", nice to see you again!")
     return result
 
 def analyze_all_previous(sourceFile):
@@ -160,15 +142,15 @@ def analyze_all_previous(sourceFile):
     return previouslySeen
 
 if __name__ == "__main__":
-    play_mp3("intro.mp3")
+    #play_mp3("/audio/intro.mp3")
     bucket = 'aya-photos'
-    sourceFile = 'test.jpg'
+    sourceFile = 'img/test.jpg'
     previouslySeen = False
-    pc = picamera.PiCamera()
+    #pc = picamera.PiCamera()
     count = 0
     while (count < 1):
-        pc.capture('test.jpg')
-        upload_image(sourceFile, bucket)
+        #pc.capture(sourceFile)
+        s3.upload_image(sourceFile, bucket)
         print("Comparing with previous faces...")
         previouslySeen = analyze_all_previous(sourceFile)
         if not previouslySeen:
@@ -178,6 +160,6 @@ if __name__ == "__main__":
             analyze_labels(labelArray)
             print("Analyzing faces...")
             analyze_faces(faceArray)
-        delete_image(bucket, sourceFile)
+        s3.delete_image(bucket, sourceFile)
         count += 1
-        time.sleep(5)
+        time.sleep(7)
