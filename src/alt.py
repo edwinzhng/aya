@@ -2,9 +2,9 @@
 import http.client, urllib.request, urllib.parse, urllib.error, base64, json
 from azure.storage.blob import BlockBlobService, ContentSettings
 
-subscription_key = 'fa3be37d6d874d3cbd904fdb52861276'
-block_blob_service = BlockBlobService(account_name='ayastore',
-        account_key='yqNBeUhrgASi+6BMiROGAxr0q4SHUBg1XKWYwFSyjg418u9XHEvKroy7NsE5qchhiK9CSTFWeyYa7xNOICbhRw==')
+with open('key', 'rb') as f:
+    subscription_key, account_key = f.readline().split()
+block_blob_service = BlockBlobService(account_name='ayastore', account_key=account_key)
 uri_base = 'westus.api.cognitive.microsoft.com'
 headers = {
     'Content-Type': 'application/json',
