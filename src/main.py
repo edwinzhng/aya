@@ -11,18 +11,15 @@ import moveMouth
 import facerecognition as fr
 import RPi.GPIO as GPIO
 import time
-import threading
+
 def main():
-    GPIO.setmode(GPIO.BOARD)
-    GPIO.setup(12, GPIO.OUT)
-    p = GPIO.PWM(12, 50)
-    p.start(7.5)
+    moveMouth.initialize()
 
     collection = 'aya-faces'
     bucket = 'aya-photos'
     sourceFile = 'test.jpg'
     pc = picamera.PiCamera()
-    threading.Thread(target = actuate).start()
+    moveMouth.moveMouth(10)
     playsound("audio/intro.ogg")
     count = 0
     while(count <= 1):

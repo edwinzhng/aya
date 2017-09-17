@@ -1,6 +1,7 @@
 import boto3
 import os
 from playsound import playsound
+import moveMouth
 
 client = boto3.client('rekognition')
 
@@ -50,6 +51,7 @@ def article_message(labelArray):
 def message(text):
     fileName = "message.ogg"
     call_polly(text, fileName)
+    moveMouth.moveMouth(5)
     playsound(fileName) # play sound
 
 '''response = {
