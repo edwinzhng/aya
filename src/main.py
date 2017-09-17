@@ -26,7 +26,7 @@ if __name__ == "__main__":
         foundFace = fr.searchFaces(collection, bucket, sourceFile)
         if foundFace:
             aws.message("Hi " + name + ", nice to see you again!")
-        else
+        else:
             labelArray = aws.detect_labels(bucket, sourceFile)
             faceArray = aws.detect_faces(bucket, sourceFile)
             print("Analyzing labels...")
