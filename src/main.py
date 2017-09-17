@@ -10,9 +10,9 @@ def play_mp3(fileName):
     os.system("mpg123-pulse " + fileName)
 
 if __name__ == "__main__":
-    play_mp3("/audio/intro.mp3")
+    play_mp3("./audio/intro.mp3")
     bucket = 'aya-photos'
-    sourceFile = 'img/test.jpg'
+    sourceFile = './img/test.jpg'
     previouslySeen = False
     pc = picamera.PiCamera()
     count = 0
