@@ -28,8 +28,18 @@ if __name__ == "__main__":
         existsPerson = aws.detect_faces(bucket, sourceFile)
         if existsPerson['FaceDetails']:
             foundFace = fr.searchFaces(collection, bucket, sourceFile)
-            name = foundFace['FaceMatches'][0]['Face']['ExternalImageId']
-            aws.message("Hi " + name + ", nice to see you again!")
+            if foundFace['FaceMatches']:
+                name = foundFace['FaceMatches'][0]['Face']['ExternalImageId']
+                text = "Hi " + name + " nice to see you again!"
+                print(text)
+                aws.message(text)
+            else:
+                labelArray = aws.detect_labels(bucket, sourceFile)
+                faceArray = aws.detect_faces(bucket, sourceFile)
+                print("Analyzing labels...")
+                aws.analyze_labels(labelArray)
+                print("Analyzing faces...")
+                aws.analyze_faces(faceArray)
         else:
             labelArray = aws.detect_labels(bucket, sourceFile)
             faceArray = aws.detect_faces(bucket, sourceFile)
