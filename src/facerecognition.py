@@ -2,7 +2,7 @@ import boto3
 
 client = boto3.client('rekognition')
 
-def addFaceToCollection(collection, bucket, sourceImage, savedName)
+def addFaceToCollection(collection, bucket, sourceImage, savedName):
     response = client.index_faces(
         CollectionId='aya-faces',
         Image={
@@ -15,7 +15,7 @@ def addFaceToCollection(collection, bucket, sourceImage, savedName)
     )
 
 
-def searchFaces(collection, bucket, sourceImage)
+def searchFaces(collection, bucket, sourceImage):
     response = client.search_faces_by_image(
         CollectionId=collection,
         Image={
