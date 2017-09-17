@@ -1,5 +1,4 @@
 import boto3
-import numpy as np # for openCV
 
 def call_polly(text, fileName):
     start = "aws polly synthesize-speech \
@@ -35,18 +34,6 @@ def get_best_label(label_array):
             max_confidence = item['Confidence']
 
     return best_label
-
-'''def opencv_capture():
-    cap = cv2.VideoCapture(0)
-    ret, frame = cap.read()
-    while(True):
-        cv2.imshow('img1',frame) #display the captured image
-        if cv2.waitKey(1): #save on pressing 'y'
-            cv2.imwrite(sourceFile,frame)
-            cv2.destroyAllWindows()
-            break
-    cap.release()
-'''
 
 def article_message(labelArray):
     bestLabel = get_best_label(labelArray)
@@ -141,7 +128,7 @@ def analyze_faces(faceArray):
         if faceDetail['Eyeglasses']['Value'] == True:
             message("I really like your glasses. You look sexy with that.")
         if faceDetail['EyesOpen']['Value'] == False:
-            message("Are you sleeping?")
+            message("Your eyes are closed, are you sleeping?")
         if faceDetail['MouthOpen']['Value'] == True:
             message("Keep your mouth shut!")
         if faceDetail['Mustache']['Value'] == True:

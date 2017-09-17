@@ -5,12 +5,13 @@ import os
 import json
 import s3
 import aws
+import facerecognition
 
 def play_mp3(fileName):
     os.system("mpg123-pulse " + fileName)
 
 if __name__ == "__main__":
-    play_mp3("./audio/intro.mp3")
+    play_mp3("audio/intro.mp3")
     bucket = 'aya-photos'
     sourceFile = 'test.jpg'
     previouslySeen = False
@@ -19,8 +20,8 @@ if __name__ == "__main__":
     while (count < 1):
         pc.capture(sourceFile)
         s3.upload_image(sourceFile, bucket)
-        print("Comparing with previous faces...")
-        previouslySeen = aws.analyze_all_previous(bucket, sourceFile)
+        print("Checking collection for face...")
+
         if not previouslySeen:
             labelArray = aws.detect_labels(bucket, sourceFile)
             faceArray = aws.detect_faces(bucket, sourceFile)
