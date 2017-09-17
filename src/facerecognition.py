@@ -24,5 +24,6 @@ def searchFaces(collection, bucket, sourceImage):
                 'Name': sourceImage,
             }
         },
+        FaceMatchThreshold=80
     )
-    return response['FaceMatches']['Face']['FaceId']
+    return response
