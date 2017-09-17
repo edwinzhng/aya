@@ -27,7 +27,7 @@ def get_best_label(label_array):
     people_tags = ('Person', 'Human', 'People')
 
     for item in label_array['Labels']:
-        if item['Confidence'] >= max_confidence  && item['Name'] not in people_tags::
+        if item['Confidence'] >= max_confidence and item['Name'] not in people_tags:
             best_label = item['Name']
             max_confidence = item['Confidence']
 

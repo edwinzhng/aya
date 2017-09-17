@@ -19,8 +19,8 @@ def main():
     bucket = 'aya-photos'
     sourceFile = 'test.jpg'
     pc = picamera.PiCamera()
-    moveMouth.moveMouth(10)
-    playsound("audio/intro.ogg")
+    #moveMouth.moveMouth(10)
+    #playsound("audio/intro.ogg")
     count = 0
     while(count <= 1):
         pc.capture(sourceFile)
@@ -39,7 +39,7 @@ def main():
                 article_message(labelArray)
         else:
             labelArray = aws.detect_labels(bucket, sourceFile)
-            article_message(labelArray)
+            aws.article_message(labelArray)
 
         s3.delete_image(bucket, sourceFile)
         count += 1
