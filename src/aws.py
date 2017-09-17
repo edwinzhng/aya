@@ -136,6 +136,24 @@ def analyze_faces(faceArray):
             emotionString = emotion['Type'] + str(int(emotion['Confidence'] // 20 * 20))
             if emotionString in emotions:
                 message(emotions[emotionString])
+        if faceDetail['Beard']['Value'] == True:
+            message("Nice beard!")
+        if faceDetail['Eyeglasses']['Value'] == True:
+            message("I really like your glasses. You look sexy with that.")
+        if faceDetail['EyesOpen']['Value'] == False:
+            message("Are you sleeping?")
+        if faceDetail['MouthOpen']['Value'] == True:
+            message("Keep your mouth shut!")
+        if faceDetail['Mustache']['Value'] == True:
+            message("Nice mustache!")
+        if faceDetail['Smile']['Value'] == True:
+            message("I like your smile.")
+        if faceDetail['Sunglasses']['Value'] == True:
+            message("Nice sunglasses!")
+        if "Male" in faceDetail['Gender'] and faceDetail['Gender']['Confidence'] > 99.9:
+            message("You really look male.")
+        if "Female" in faceDetail['Gender'] and faceDetail['Gender']['Confidence'] > 99.9:
+            message("You really look feminine.")
 
 def analyze_previous(previousArray, name):
     result = False
@@ -151,7 +169,7 @@ def analyze_previous(previousArray, name):
             message("Hi " + name + ", nice to see you again!")
     return result
 
-def analyze_all_previous(sourceFile):
+def analyze_all_previous(bucket, sourceFile):
     previouslySeen = False
     targetFile = 'MathieuGodinSelfie.jpg'
     previousArray = detect_previous(bucket, sourceFile, targetFile)
