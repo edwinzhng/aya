@@ -12,7 +12,7 @@ def play_mp3(fileName):
 if __name__ == "__main__":
     play_mp3("./audio/intro.mp3")
     bucket = 'aya-photos'
-    sourceFile = './img/test.jpg'
+    sourceFile = 'test.jpg'
     previouslySeen = False
     pc = picamera.PiCamera()
     count = 0
