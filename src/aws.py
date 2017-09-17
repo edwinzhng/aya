@@ -8,6 +8,7 @@ def call_polly(text, fileName):
     start = "aws polly synthesize-speech \
     --output-format ogg_vorbis \
     --voice-id Joanna \
+    --sample-rate 8000 \
     --text '"
     end = "' \
     "

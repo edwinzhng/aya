@@ -15,7 +15,7 @@ def main():
     sourceFile = 'test.jpg'
     pc = picamera.PiCamera()
 
-    playsound("audio/intro.mp3")
+    playsound("audio/intro.ogg")
 
     count = 0
     while(count <= 1):
@@ -27,7 +27,7 @@ def main():
             foundFace = fr.searchFaces(collection, bucket, sourceFile)
             if foundFace['FaceMatches']:
                 name = foundFace['FaceMatches'][0]['Face']['ExternalImageId']
-                text = "Hi " + name + " nice to see you again!"
+                text = "Hi " + name + ", nice to see you again!"
                 print(text)
                 aws.message(text)
             else:
@@ -47,7 +47,6 @@ def main():
 
         s3.delete_image(bucket, sourceFile)
         count += 1
-        time.sleep(7)
 
 if __name__ == '__main__':
     main()
