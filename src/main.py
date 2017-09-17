@@ -1,8 +1,9 @@
 #!/usr/bin/python3
-#import picamera
+import picamera
 import time
 import os
 import json
+
 import s3
 import aws
 import facerecognition as fr
@@ -14,13 +15,13 @@ if __name__ == "__main__":
     collection = 'aya-faces'
     bucket = 'aya-photos'
     sourceFile = 'test.jpg'
-    #pc = picamera.PiCamera()
+    pc = picamera.PiCamera()
 
     play_mp3("audio/intro.mp3")
 
     count = 0
     while (count < 1):
-        #pc.capture(sourceFile)
+        pc.capture(sourceFile)
         s3.upload_image(sourceFile, bucket)
         print("Checking collection for face...")
         foundFace = fr.searchFaces(collection, bucket, sourceFile)
