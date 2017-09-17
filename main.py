@@ -38,7 +38,7 @@ def detect_previous(photo_bucket, source_file, target_file):
                                   TargetImage={'S3Object':{'Bucket':photo_bucket,'Name':target_file}})
 
 def play_mp3(fileName):
-    os.system("mpg123 " + fileName)
+    os.system("mpg123-pulse " + fileName)
 
 
 # TODO get relevancy instead of taking max confidence
